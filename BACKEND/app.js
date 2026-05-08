@@ -19,12 +19,15 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://url-shortner-mu-teal.vercel.app/"
+    "https://url-shortner-isqh1nkuj-harshits-projects-a905c70c.vercel.app",
+    "https://url-shortner-jlxo97h5e-harshits-projects-a905c70c.vercel.app"
 ];
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: allowedOrigins
 }));
+
+app.options("*", cors());
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
