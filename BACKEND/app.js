@@ -15,9 +15,14 @@ dotenv.config("./.env")
 
 const app = express();
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://url-shortner-isqh1nkuj-harshits-projects-a905c70c.vercel.app"
+];
+
 app.use(cors({
-    origin: 'http://localhost:5173', // your React app
-    credentials: true // 👈 this allows cookies to be sent
+    origin: allowedOrigins,
+    credentials: true
 }));
 
 app.use(express.json())
