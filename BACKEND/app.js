@@ -19,12 +19,13 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://url-shortner-isqh1nkuj-harshits-projects-a905c70c.vercel.app",
     "https://url-shortner-jlxo97h5e-harshits-projects-a905c70c.vercel.app"
 ];
 
 app.use(cors({
-    origin: allowedOrigins
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 app.options("*", cors());
