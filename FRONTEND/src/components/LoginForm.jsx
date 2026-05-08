@@ -1,99 +1,95 @@
 import React, { useState } from 'react';
 import { loginUser } from '../api/user.api';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { login } from '../store/slice/authSlice.js';
 import { useNavigate } from '@tanstack/react-router';
 
 const LoginForm = ({ state }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const auth = useSelector((state) => state.auth)
+    console.log(auth)
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+    const handleSubmit = async () => {
+        setLoading(true);
+        setError('');
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+        try {
+            const data = await loginUser(password, email);
+            dispatch(login(data.user))
+            navigate({to:"/dashboard"})
+            setLoading(false);
+            console.log("signin success")
+        } catch (err) {
+            setLoading(false);
+            setError(err.message || 'Login failed. Please check your credentials.');
+        }
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    return (
+        <div className="w-full max-w-md mx-auto">
+            <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 
-    setLoading(true);
-    setError('');
+                {error && (
+                    <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
+                        {error}
+                    </div>
+                )}
 
-    try {
-      const data = await loginUser(email, password);
-      dispatch(login(data.user));
-      navigate({ to: "/dashboard" });
-    } catch (err) {
-      setError(err.message || 'Login failed');
-    } finally {
-      setLoading(false);
-    }
-  };
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                        Email
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="email"
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
 
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full space-y-5 text-white"
-    >
+                <div className="mb-6">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                        Password
+                    </label>
+                    <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="password"
+                        type="password"
+                        placeholder="******************"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
 
-      <div className="text-center">
-        <h2 className="text-3xl font-bold">Welcome Back</h2>
-        <p className="text-sm text-slate-400 mt-1">
-          Login to your account
-        </p>
-      </div>
+                <div className="flex items-center justify-between">
+                    <button
+                        className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        type="submit"
+                        onClick={handleSubmit}
+                        disabled={loading}
+                    >
+                        {loading ? 'Signing in...' : 'Sign In'}
+                    </button>
+                </div>
 
-      {error && (
-        <div className="bg-red-900/30 border border-red-500 text-red-300 p-3 rounded-lg text-sm">
-          {error}
+                <div className="text-center mt-4">
+                    <p className="cursor-pointer text-sm text-gray-600">
+                        Don't have an account? <span onClick={() => state(false)} className="text-blue-500 hover:text-blue-700">Register</span>
+                    </p>
+                </div>
+            </div>
         </div>
-      )}
-
-      <div className="space-y-3">
-
-        <div>
-          <label className="text-sm text-slate-300">Email</label>
-          <input
-            className="w-full mt-1 bg-slate-800 border border-slate-700 p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <label className="text-sm text-slate-300">Password</label>
-          <input
-            type="password"
-            className="w-full mt-1 bg-slate-800 border border-slate-700 p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-      </div>
-
-      <button
-        disabled={loading}
-        className="w-full bg-blue-500 hover:bg-blue-600 transition py-3 rounded-lg font-semibold disabled:opacity-50"
-      >
-        {loading ? "Signing in..." : "Sign In"}
-      </button>
-
-      <p className="text-center text-sm text-slate-400">
-        Don't have an account?{" "}
-        <span
-          onClick={() => state(false)}
-          className="text-blue-400 cursor-pointer hover:underline"
-        >
-          Register
-        </span>
-      </p>
-
-    </form>
-  );
+    );
 };
 
 export default LoginForm;
