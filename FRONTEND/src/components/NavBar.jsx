@@ -3,40 +3,32 @@ import { Link } from '@tanstack/react-router';
 
 const Navbar = () => {
   return (
-    <nav className="bg-white border border-b-black">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+    <nav className="bg-slate-900 border-b border-slate-800 px-6 py-4 flex justify-between items-center">
 
-          {/* Left side - URL_SHORTNER */}
-          <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold text-gray-800">
-              URL Shortener
-            </Link>
-          </div>
+      <Link to="/" className="text-white font-bold text-xl">
+        URL Shortener
+      </Link>
 
-          {/* Right side - Auth buttons */}
-          <div className="flex items-center space-x-3">
+      <div className="flex gap-3">
 
-          <Link
-            to="/auth"
-            search={{ mode: "login" }}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium"
-          >
-            Login
-          </Link>
+        <Link
+          to="/auth"
+          search={{ mode: "login" }}
+          className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-white"
+        >
+          Login
+        </Link>
 
-          <Link
-            to="/auth"
-            search={{ mode: "signup" }}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium"
-          >
-            Signup
-          </Link>
+        <Link
+          to="/auth"
+          search={{ mode: "signup" }}
+          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg text-white"
+        >
+          Signup
+        </Link>
 
-        </div>
-
-        </div>
       </div>
+
     </nav>
   );
 };

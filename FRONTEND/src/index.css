@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+/* Base */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #0f172a; /* dark background */
+  color: white;
+}
+
+/* Smooth UI */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
