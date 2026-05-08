@@ -21,6 +21,7 @@ export const redirectFromShortUrl = wrapAsync(async (req,res)=>{
     res.redirect(url.full_url)
 })
 
+
 export const createCustomShortUrl = wrapAsync(async (req,res)=>{
     const {url,slug} = req.body
     const shortUrl = await createShortUrlWithoutUser(url,customUrl)
