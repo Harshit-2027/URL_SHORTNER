@@ -10,7 +10,7 @@ export const createShortUrl = wrapAsync(async (req,res)=>{
     }else{  
         shortUrl = await createShortUrlWithoutUser(data.url)
     }
-    res.status(200).json({shortUrl : `${process.env.APP_URL}${short_url}`})
+    res.status(200).json({shortUrl : process.env.APP_URL + shortUrl})
 })
 
 
